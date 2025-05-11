@@ -86,4 +86,4 @@ def get_work_item_description(
         return {"error": str(e)}
 
 if __name__ == "__main__":
-    mcp.run(transport="sse", host="0.0.0.0", port=9000)
+    mcp.run(transport="sse", host="0.0.0.0", port=7001)
