@@ -12,7 +12,7 @@ COPY . /app
 # 4. 创建虚拟环境并安装依赖
 RUN uv venv .venv
 ENV PATH="/app/.venv/bin:$PATH"
-RUN uv pip install --system -e .
+RUN uv pip install -r pyproject.toml
 
 # 5. 暴露端口
 EXPOSE 7001
