@@ -1,0 +1,11 @@
+[project]
+name = "yx-mcp"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp",
+    "requests>=2.25.0",
+    "pydantic>=1.10.0",
+    "python-dotenv>=1.0.0"
+]
