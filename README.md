@@ -3,6 +3,10 @@
 ## 依赖安装
 本项目推荐使用 [uv](https://github.com/astral-sh/uv) 进行依赖管理和运行。
 
+<a href="https://glama.ai/mcp/servers/@tingxifa/mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/@tingxifa/mcp/badge" alt="Workitem Server MCP server" />
+</a>
+
 ### 安装 uv
 ```bash
 pip install uv  # 或参考 uv 官方文档
@@ -106,4 +110,4 @@ uv run mcp run mcp_server.py
 - [uv 官方文档](https://github.com/astral-sh/uv)
 - [fastmcp 官方文档](https://gofastmcp.com/)
 - [MCP 协议介绍](https://github.com/jlowin/fastmcp)
-- [python-dotenv](https://github.com/theskumar/python-dotenv) 
+- [python-dotenv](https://github.com/theskumar/python-dotenv)
