@@ -10,6 +10,8 @@ WORKDIR /app
 COPY . /app
 
 # 4. 安装依赖（基于 pyproject.toml）
+RUN uv venv .venv
+ENV PATH="/app/.venv/bin:$PATH"
 RUN uv pip install .
 
 # 5. 暴露端口
