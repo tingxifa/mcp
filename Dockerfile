@@ -15,7 +15,7 @@ ENV PATH="/app/.venv/bin:$PATH"
 RUN uv pip install -r pyproject.toml
 
 # 5. 暴露端口
-EXPOSE 7001
+EXPOSE 6000
 
 # 6. 设置默认启动命令
 CMD ["python", "mcp_server.py"] 
