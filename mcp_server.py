@@ -122,5 +122,5 @@ def get_work_item_description(
 
 if __name__ == "__main__":
     print("DEBUG: About to call mcp.run()")
-    mcp.run(transport="sse", host="0.0.0.0", port=7001)
+    mcp.run(transport="sse", host="0.0.0.0", port=6000)
     print("DEBUG: mcp.run() finished or was bypassed")
