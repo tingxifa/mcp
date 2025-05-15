@@ -49,17 +49,17 @@ def extract_content_and_image_urls_from_html(html_value):
         text_only = text_only.replace(placeholder, f"\nImage URL: {url}\n")
     cleaned_text = re.sub(r'\n\s*\n', '\n', text_only)
     lines = [line.strip() for line in cleaned_text.split('\n') if line.strip()]
-    return "\n".join(lines), images 
+    return "\n".join(lines), images
 
 @mcp.tool(description="通过需求 ID 获取需求详情")
 def get_work_item_description(
-    id: Annotated[
-        str,
-        Field(
-            description="需求ID，必须以 YEPPPP 开头，如 YEPPPP-154",
-            pattern="^YEPPPP.*"
-        )
-    ]
+        id: Annotated[
+            str,
+            Field(
+                description="需求ID，必须以 YEPPPP 开头，如 YEPPPP-154",
+                pattern="^YEPPPP.*"
+            )
+        ]
 ) -> dict:
     """
     获取需求描述，返回结构化 JSON，包含纯文本、图片 URL、原始 HTML
@@ -91,7 +91,10 @@ def get_work_item_description(
         gemini_model = os.environ.get("GEMINI_MODEL")
         if not gemini_model:
             raise RuntimeError("环境变量 GEMINI_MODEL 必须设置")
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{gemini_model}:generateContent?key={gemini_api_key}"
+        base_url = os.environ.get("GEMINI_BASE_URL")
+        if not base_url:
+            base_url = "https://generativelanguage.googleapis.com/v1beta"
+        url = f"{base_url}/v1beta/models/{gemini_model}:generateContent?key={gemini_api_key}"
 
         resp = requests.post(
             url,
