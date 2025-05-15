@@ -1,4 +1,6 @@
 import os
+from pprint import pprint
+
 # 自动加载.env文件（如果存在）
 from dotenv import load_dotenv
 from mcp import ServerSession
@@ -49,7 +51,7 @@ def extract_content_and_image_urls_from_html(html_value):
     lines = [line.strip() for line in cleaned_text.split('\n') if line.strip()]
     return "\n".join(lines), images 
 
-@mcp.tool(description="通过需求 ID 获取需求详情, 内部会有图片需要一起解析")
+@mcp.tool(description="通过需求 ID 获取需求详情")
 def get_work_item_description(
     id: Annotated[
         str,
@@ -76,11 +78,41 @@ def get_work_item_description(
         json_data = json.loads(description)
         html_value = json_data['htmlValue']
         text, images = extract_content_and_image_urls_from_html(html_value)
+        tishi = """
+        这里有一个需求，你需要执行如下步骤， 但只需要输出详细的功能点， 用于指导开发：
+1. 识别文本与图片内容，进行内容识别
+2. 结合文本与图片的内容，将内容合并进行梳理成详细的功能点， 可以进行额外补充，但是提供在建议内
+3. 检查功能点是否完善与详细
+
+        """
+        gemini_api_key = os.environ.get("GEMINI_API_KEY")
+        if not gemini_api_key:
+            raise RuntimeError("环境变量 GEMINI_API_KEY 必须设置")
+        gemini_model = os.environ.get("GEMINI_MODEL")
+        if not gemini_model:
+            raise RuntimeError("环境变量 GEMINI_MODEL 必须设置")
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{gemini_model}:generateContent?key={gemini_api_key}"
+
+        resp = requests.post(
+            url,
+            headers={"Content-Type": "application/json"},
+            json={"contents": [{"parts": [{"text": tishi + text}]}]}
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        candidates_ = data['candidates']
+        content_ = candidates_[0]['content']
+        parts_ = content_['parts']
+        # 遍历累加 text
+        text_ = ""
+        for part in parts_:
+            text_ += part['text']
+
         return {
             "id": id,
-            "text": text,
+            "text": text_,
             "images": images,
-            "html": html_value
+            # "html": html_value
         }
     except Exception as e:
         return {"error": str(e)}
