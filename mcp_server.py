@@ -79,7 +79,7 @@ def get_work_item_description(
         html_value = json_data['htmlValue']
         text, images = extract_content_and_image_urls_from_html(html_value)
         tishi = """
-        这里有一个需求，你需要执行如下步骤， 但只需要输出详细的功能点， 用于指导开发：
+        这里有一个需求，你需要执行如下步骤， 但只需要输出后端详细的功能点， 用于指导开发：
 1. 识别文本与图片内容，进行内容识别
 2. 结合文本与图片的内容，将内容合并进行梳理成详细的功能点， 可以进行额外补充，但是提供在建议内
 3. 检查功能点是否完善与详细
@@ -94,7 +94,7 @@ def get_work_item_description(
         base_url = os.environ.get("GEMINI_BASE_URL")
         if not base_url:
             base_url = "https://generativelanguage.googleapis.com/v1beta"
-        url = f"{base_url}/v1beta/models/{gemini_model}:generateContent?key={gemini_api_key}"
+        url = f"{base_url}/models/{gemini_model}:generateContent?key={gemini_api_key}"
 
         resp = requests.post(
             url,
